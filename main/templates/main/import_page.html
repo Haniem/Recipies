@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Импорт рецептов из XML</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+</head>
+<body class="{% if theme == 'dark' %}dark-theme{% else %}light-theme{% endif %}">
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+        <a class="navbar-brand" href="/">Рецепты</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Главная</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'add_recipe' %}">Добавить рецепт</a></li>
+                <li class="nav-item active"><a class="nav-link" href="#">Импорт</a></li>
+            </ul>
+            <form action="{% url 'toggle_theme' %}" method="post" class="form-inline my-2 my-lg-0">
+                {% csrf_token %}
+                <input type="hidden" name="current_path" value="{{ request.path }}">
+                <button type="submit" class="btn btn-outline-secondary">Сменить тему</button>
+            </form>
+        </div>
+    </nav>
+</header>
+<div class="container mt-4">
+    <h2>Импортировать рецепты из XML</h2>
+    <form method="post" action="{% url 'import_from_xml' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="file">Выберите XML файл:</label>
+            <input type="file" class="form-control" id="file" name="file" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Импортировать</button>
+    </form>
+</div>
+</body>
+</html> 

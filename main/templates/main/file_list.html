@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2>Files</h2>
+            {% if files %}
+                <ul>
+                    {% for file in files %}
+                        <li>
+                            <strong>{{ file.filename }}</strong>
+                            <pre>{{ file.content|safe }}</pre>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No files found</p>
+            {% endif %}
+        </div>
+    </div>
+</div>

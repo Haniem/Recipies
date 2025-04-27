@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<recipes><recipe><name>Штрудель</name>
+<ingredients><ingredient>яблоко помидор огурец</ingredient></ingredients>
+<instructions>ghbujnjdbnm</instructions>
+<cooking_time>1000 дней</cooking_time>
+
+</recipe><recipe><name>123</name>
+<ingredients><ingredient>1 2 3 4 5</ingredient></ingredients>
+<instructions>Все сварить</instructions>
+<cooking_time>20</cooking_time></recipe><recipe><name>123</name><ingredients><ingredient>1 2 3 4 5</ingredient></ingredients><instructions>Все сварить</instructions><cooking_time>20</cooking_time></recipe><recipe><name>123</name><ingredients><ingredient>1</ingredient><ingredient>2</ingredient></ingredients><instructions>123</instructions><cooking_time>40 </cooking_time></recipe><recipe><name>123</name><ingredients><ingredient>1</ingredient><ingredient>2</ingredient></ingredients><instructions>123</instructions><cooking_time>40 </cooking_time></recipe><recipe><name>В XML</name><ingredients><ingredient>1</ingredient><ingredient>2</ingredient></ingredients><instructions>123</instructions><cooking_time>123</cooking_time></recipe></recipes>

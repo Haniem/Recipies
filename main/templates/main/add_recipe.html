@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить рецепт</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+</head>
+<body class="{% if theme == 'dark' %}dark-theme{% else %}light-theme{% endif %}">
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+        <a class="navbar-brand" href="/">Рецепты</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Главная</a></li>
+                <li class="nav-item active"><a class="nav-link" href="#">Добавить рецепт</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'import_page' %}">Импорт</a></li>
+            </ul>
+            <form action="{% url 'toggle_theme' %}" method="post" class="form-inline my-2 my-lg-0">
+                {% csrf_token %}
+                <input type="hidden" name="current_path" value="{{ request.path }}">
+                <button type="submit" class="btn btn-outline-secondary">Сменить тему</button>
+            </form>
+        </div>
+    </nav>
+</header>
+<div class="container mt-4">
+    <h2>Добавить рецепт</h2>
+    <form id="recipeForm" method="POST" action="{% url 'export_to_xml' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name">Название рецепта:</label>
+            <input type="text" id="name" name="name" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="ingredients">Выберите ингредиенты:</label>
+            <select id="ingredients" name="ingredients" multiple required class="form-control">
+                {% for ingredient in ingredients %}
+                    <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="instructions">Инструкции:</label>
+            <textarea id="instructions" name="instructions" class="form-control" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="cooking_time">Время приготовления:</label>
+            <input type="text" id="cooking_time" name="cooking_time" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="storage_type">Место сохранения:</label>
+            <select id="storage_type" name="storage_type" class="form-control">
+                <option value="xml">XML файл</option>
+                <option value="database">База данных</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Сохранить рецепт</button>
+    </form>
+    <form id="addIngredientForm" class="mt-3">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="new_ingredient">Добавить новый ингредиент:</label>
+            <input type="text" id="new_ingredient" name="new_ingredient" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-success">Добавить ингредиент</button>
+    </form>
+    <div id="ingredient-message"></div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#ingredients').select2({
+        width: '100%',
+        placeholder: 'Выберите ингредиенты'
+    });
+});
+// AJAX добавление ингредиента (тот же код, что был)
+const addIngredientForm = document.getElementById('addIngredientForm');
+const ingredientInput = document.getElementById('new_ingredient');
+const ingredientSelect = document.getElementById('ingredients');
+const ingredientMessage = document.getElementById('ingredient-message');
+addIngredientForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name = ingredientInput.value.trim();
+    if (!name) return;
+    const csrfToken = document.querySelector('#addIngredientForm [name=csrfmiddlewaretoken]').value;
+    fetch('{% url "add_ingredient_ajax" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': csrfToken
+        },
+        body: 'name=' + encodeURIComponent(name)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const selected = Array.from(ingredientSelect.selectedOptions).map(opt => opt.value);
+            ingredientSelect.innerHTML = '';
+            data.ingredients.forEach(ing => {
+                const option = document.createElement('option');
+                option.value = ing.id;
+                option.textContent = ing.name;
+                if (selected.includes(ing.id.toString()) || ing.id === data.added_id) {
+                    option.selected = true;
+                }
+                ingredientSelect.appendChild(option);
+            });
+            // Обновить select2 после изменения опций
+            $('#ingredients').trigger('change.select2');
+            ingredientInput.value = '';
+            ingredientMessage.innerHTML = '<div class="alert alert-success mt-2">Ингредиент добавлен!</div>';
+        } else {
+            ingredientMessage.innerHTML = '<div class="alert alert-danger mt-2">Ошибка добавления ингредиента</div>';
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка при AJAX-запросе:', error);
+        ingredientMessage.innerHTML = '<div class="alert alert-danger mt-2">Ошибка соединения с сервером</div>';
+    });
+});
+</script>
+</body>
+</html> 

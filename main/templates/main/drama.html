@@ -1,0 +1,64 @@
+{% load static%}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Онлайн-кинотеатр</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+</head>
+<body class="{% if theme == 'dark' %}dark-theme{% else %}light-theme{% endif %}">
+    <header>
+        <nav>
+            <form action="{% url 'toggle_theme' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="current_path" value="{{ request.path }}">
+                <button type="submit" class="theme-toggle-button">Сменить тему</button>
+            </form> <!-- Кнопка для смены темы -->
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>Online Cinema</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="genre">Выберите категорию:</label>
+                <select class="form-control" id="genre" name="genre">
+                    <option value="drama">Драма</option>
+                    <option value="comedy">Комедия</option>
+                    <option value="horror">Ужас</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Подтвердить</button>
+        </form>
+
+        <div class="container px-4 text-center">
+            <div class="row gx-5">
+              <div class="col">
+               <div class="p-3">
+                  <div class="custom-block">
+                    <img src="{% static 'main/img/love.png' %}" alt="love">
+                    <p>Любовь и голуби (1984)</p>
+                  </div>
+               </div>
+              </div>
+              <div class="col">
+                <div class="p-3">
+                    <div class="custom-block">
+                        <img src="{% static 'main/img/titn.png' %}" alt="tit">
+                        <p>Титаник (1997)</p>
+                      </div>
+                </div>
+              </div>
+            </div>
+        </div>
+          
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

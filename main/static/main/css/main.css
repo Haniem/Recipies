@@ -1,0 +1,105 @@
+html, body {
+    height: 100%;
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(120deg, #a18cd1 0%, #fbc2eb 100%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+h1{
+    padding-top: 30px;
+}
+
+img {
+    width: 250px; /* Ширина изображения */
+    object-fit: cover; /* Масштабирует изображение, чтобы оно покрывало всю область */
+    border-radius: 10px; 
+  }
+
+  .dark-theme {
+    color:  rgb(100, 75, 89);
+}
+
+.dark-theme .form-control {
+    background-color: rgb(100, 75, 89);
+    color: #000000;
+    border: 1px solid #000000;
+}
+
+.dark-theme .form-control option {
+    color: rgb(100, 75, 89);
+    background-color: #000000; 
+}
+
+.light-theme {
+    color: rgb(165, 113, 142);
+}
+
+.light-theme .form-control {
+    background-color: rgb(253, 253, 253);
+    color: rgb(165, 113, 142);
+    border: 1px solid rgb(165, 113, 142);
+}
+
+.light-theme .form-control option {
+    background-color: rgb(165, 113, 142);
+    color: #ffffff; 
+}
+
+.dark-theme button.theme-toggle-button {
+    background-color: rgb(165, 113, 142);
+    color: rgb(9, 9, 9);
+}
+
+.light-theme button.theme-toggle-button {
+    background-color: rgb(165, 113, 142);
+    color: rgb(251, 251, 251);
+    border-color: rgb(165, 113, 142);
+    border: 1px solid rgb(165, 113, 142);
+}
+
+.dark-theme .btn-primary{
+    background-color: rgb(165, 113, 142) ;
+    color:rgb(0, 0, 0);
+    border-color: rgb(165, 113, 142);
+}
+
+.light-theme .btn-primary {
+    background-color: rgb(165, 113, 142);
+    color: rgb(255, 255, 255);
+    border-color: rgb(165, 113, 142);
+}
+
+.container.px-4 {
+    margin-top: 50px; /* Увеличиваем отступ сверху */
+}
+
+.dark-theme .p-3{
+    background-color: rgb(84, 63, 75);
+    color:rgb(0, 0, 0);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-color: rgb(165, 113, 142);
+}
+
+.light-theme .p-3{
+    background-color: rgb(238, 224, 232);
+    color:rgb(139, 89, 117);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-color: rgb(165, 113, 142);
+    border: 1px solid rgb(165, 113, 142);
+}
+
+p {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+#dataForm {
+    margin-left: 20px; 
+}

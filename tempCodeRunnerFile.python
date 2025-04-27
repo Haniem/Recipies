@@ -1,0 +1,24 @@
+# Take input from the user for sets A and B
+A = set(map(int, input("Enter elements of set A separated by space: ").split()))
+B = set(map(int, input("Enter elements of set B separated by space: ").split()))
+
+# Define the universal set I
+I = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+
+# Calculate the required operations
+union = A.union(B)
+intersection = A.intersection(B)
+complement_A = I.difference(A)
+complement_B = I.difference(B)
+symmetric_difference = A.symmetric_difference(B)
+cartesian_product = [(a, b) for a in A for b in B]
+
+# Print the results
+print("A union B =", union)
+print("A intersection B =", intersection)
+print("A =", A)
+print("B =", B)
+print("A symmetric difference B =", symmetric_difference)
+print("A complement =", complement_A)
+print("B complement =", complement_B)
+print("A cartesian product B =", cartesian_product)

@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактировать рецепт</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+        <a class="navbar-brand" href="/">Рецепты</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Главная</a></li>
+                <li class="nav-item"><a class="nav-link" href="/">Добавить рецепт</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'import_from_xml' %}">Импорт</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'all_recipes' %}">Все рецепты</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<div class="container mt-4">
+    <h2>Редактировать рецепт</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name">Название рецепта:</label>
+            <input type="text" id="name" name="name" class="form-control" required value="{{ recipe.name }}">
+        </div>
+        <div class="form-group">
+            <label for="ingredients">Ингредиенты:</label>
+            <select id="ingredients" name="ingredients" multiple required class="form-control">
+                {% if is_xml %}
+                    {% for ing in ingredients %}
+                        <option value="{{ ing }}" {% if ing in selected_ids %}selected{% endif %}>{{ ing }}</option>
+                    {% endfor %}
+                {% else %}
+                    {% for ing in ingredients %}
+                        <option value="{{ ing.id }}" {% if ing.id in selected_ids %}selected{% endif %}>{{ ing.name }}</option>
+                    {% endfor %}
+                {% endif %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="instructions">Инструкции:</label>
+            <textarea id="instructions" name="instructions" class="form-control" required>{{ recipe.instructions }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="cooking_time">Время приготовления:</label>
+            <input type="text" id="cooking_time" name="cooking_time" class="form-control" required value="{{ recipe.cooking_time }}">
+        </div>
+        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+        <a href="{% url 'all_recipes' %}" class="btn btn-secondary ml-2">Назад</a>
+    </form>
+</div>
+</body>
+</html> 
