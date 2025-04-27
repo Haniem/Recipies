@@ -28,6 +28,14 @@
 </header>
 <div class="container mt-4">
     <h2>Все рецепты</h2>
+    <div class="mb-3">
+        <label for="filter-source"><strong>Показать:</strong></label>
+        <select id="filter-source" class="form-control w-auto d-inline-block ml-2">
+            <option value="all">Все рецепты</option>
+            <option value="db">Только из базы данных</option>
+            <option value="xml">Только из XML</option>
+        </select>
+    </div>
     {% if messages %}
         <div class="container mt-3">
             {% for message in messages %}
@@ -40,15 +48,15 @@
             {% endfor %}
         </div>
     {% endif %}
-    <div class="row">
+    <div class="row" id="recipes-list">
         {% for recipe in all_recipes %}
-            <div class="col-md-6 mb-4">
+            <div class="col-md-6 mb-4 recipe-card" data-source="{{ recipe.source|lower }}">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">{{ recipe.name }}</h5>
                         <h6 class="card-subtitle mb-2">
-                            {% if recipe.source == 'БД' %}
-                                <span class="badge badge-success">БД</span>
+                            {% if recipe.source == 'База данных' or recipe.source == 'БД' %}
+                                <span class="badge badge-success">База данных</span>
                             {% elif recipe.source == 'XML' %}
                                 <span class="badge badge-primary">XML</span>
                             {% endif %}
@@ -56,7 +64,7 @@
                         <p><strong>Ингредиенты:</strong> {{ recipe.ingredients|join:', ' }}</p>
                         <p><strong>Инструкции:</strong> {{ recipe.instructions }}</p>
                         <p><strong>Время приготовления:</strong> {{ recipe.cooking_time }}</p>
-                        {% if recipe.source == 'БД' %}
+                        {% if recipe.source == 'База данных' or recipe.source == 'БД' %}
                             <a href="{% url 'edit_recipe' recipe.pk %}" class="btn btn-warning btn-sm">Редактировать</a>
                         {% elif recipe.source == 'XML' %}
                             <a href="{% url 'edit_recipe_xml' forloop.counter0 %}" class="btn btn-warning btn-sm">Редактировать</a>
@@ -71,5 +79,18 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+$(function() {
+    $('#filter-source').on('change', function() {
+        var val = $(this).val();
+        $('.recipe-card').show();
+        if (val === 'db') {
+            $('.recipe-card').not('[data-source="база данных"]').hide();
+        } else if (val === 'xml') {
+            $('.recipe-card').not('[data-source="xml"]').hide();
+        }
+    });
+});
+</script>
 </body>
 </html>

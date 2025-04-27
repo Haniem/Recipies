@@ -121,7 +121,7 @@ def all_recipes(request):
             'ingredients': [i.name for i in recipe.ingredients.all()],
             'instructions': recipe.instructions,
             'cooking_time': recipe.cooking_time,
-            'source': 'БД',
+            'source': 'База данных',
         })
 
     # Рецепты из XML
